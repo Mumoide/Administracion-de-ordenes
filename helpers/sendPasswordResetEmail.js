@@ -17,7 +17,7 @@ function sendPasswordResetEmail(email, token) {
         from: '"Laboratorio Fuentes" <MAILER_USER>',
         to: email,
         subject: 'Restablecer contraseña',
-        text: `Entra al siguiente link para restablecer tu contraseña: http://127.0.0.1:5173/resetPassword?email=${email}&token=${token}`,
+        text: `Entra al siguiente link para restablecer tu contraseña: https://frontend-ordenes-adm.web.app/resetPassword?email=${email}&token=${token}`,
     };
 
     transporter.sendMail(mailOptions, (err) => {

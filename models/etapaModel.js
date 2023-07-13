@@ -3,8 +3,8 @@ const db = require('../database/db');
 class Etapas {
   static getAllEtapas(id_orden) {
     return new Promise((resolve, reject) => {
-      const selectFirstRow = `select hoee.*, es.nombre_estados, et.nombre_etapas from historial_ordenes_etapas_estados hoee join etapas et on hoee.id_etapa = et.id join estados es on hoee.id_estado = es.id where hoee.id_orden = (?) and activo = 1 ORDER BY hoee.activo DESC,hoee.fecha_inicio_estado DESC, hoee.id DESC, hoee.activo DESC LIMIT 1;`;
-      const selectExceptFirstRow = "SELECT hoee.*, nombre_estados, nombre_etapas FROM (SELECT hoee.*, es.nombre_estados, et.nombre_etapas, ROW_NUMBER() OVER (ORDER BY hoee.activo DESC, hoee.fecha_inicio_estado DESC, hoee.id DESC) AS row_num FROM historial_ordenes_etapas_estados hoee JOIN etapas et ON hoee.id_etapa = et.id JOIN estados es ON hoee.id_estado = es.id WHERE hoee.id_orden = (?) AND hoee.activo = 1) hoee WHERE hoee.row_num > 1;"
+      const selectFirstRow = `select hoee.*, es.nombre_estados, et.nombre_etapas from historial_ordenes_etapas_estados hoee join etapas et on hoee.id_etapa = et.id join estados es on hoee.id_estado = es.id where hoee.id_orden = (?) and activo = 1 ORDER BY hoee.id DESC, hoee.activo DESC,hoee.fecha_inicio_estado DESC LIMIT 1;`;
+      const selectExceptFirstRow = "SELECT hoee.*, nombre_estados, nombre_etapas FROM (SELECT hoee.*, es.nombre_estados, et.nombre_etapas, ROW_NUMBER() OVER (ORDER BY hoee.id DESC, hoee.activo DESC, hoee.fecha_inicio_estado DESC) AS row_num FROM historial_ordenes_etapas_estados hoee JOIN etapas et ON hoee.id_etapa = et.id JOIN estados es ON hoee.id_estado = es.id WHERE hoee.id_orden = (?) AND hoee.activo = 1) hoee WHERE hoee.row_num > 1;"
       db.query(selectFirstRow, [id_orden], (error, firstRowResult) => {
         if (error) {
           reject(error);
